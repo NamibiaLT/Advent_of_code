@@ -27,19 +27,18 @@ class Movement
 		end 
 	end
 
+	ORIENTATIONS = [:north, :east, :south, :west]
+	 
   def self.calculate_orientation(instruction, starting_position)
-    direction, step = parse_instruction(instruction)
-		left = direction == "L"
-		case starting_position[:orientation]
-    when :north
-      left ? :west : :east
-    when :south
-      left ? :east : :west
-    when :east
-      left ? :north : :south
-    when :west
-      left ? :south : :north
-    end 
+    direction, _ = parse_instruction(instruction)
+		orientation = starting_position[:orientation]
+		index = ORIENTATIONS.index(orientation)
+		if direction == 'R'
+			new_index = index + 1
+		else
+			new_index = index - 1
+		end
+		ORIENTATIONS[new_index % ORIENTATIONS.size]
   end
 
 	def self.parse_instruction(instruction)
